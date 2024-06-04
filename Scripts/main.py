@@ -1,22 +1,14 @@
 import argparse
 import logging
-from kivy.app import App
-from kivy.uix.widget import Widget
-
-class PongGame(Widget):
-    pass
-
-
-class PongApp(App):
-    def build(self):
-        return PongGame()
-
+from GUI import SomeApp
 
 def main():
 
     logger = logging.Logger("app")
     try:
-        PongApp().run()
+        app = SomeApp()
+        app.mainloop()
+
     except Exception as e:
         logger.error(e)
 

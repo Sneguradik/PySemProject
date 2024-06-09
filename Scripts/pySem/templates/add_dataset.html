@@ -1,0 +1,46 @@
+{% extends 'start.html' %}
+
+{% block title %}Add dataset{% endblock %}
+
+{% block links %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="container d-flex flex-column gap-5">
+        <form method="post" enctype="multipart/form-data" action="/dataset/insert">
+            {% csrf_token %}
+            <h2 class="pb-2 border-bottom text-white">Import data</h2>
+            <div class="mb-3">
+                <label for="{{ insertDataForm.dataset.id_for_label }}" class="form-label text-white">{{ insertDataForm.dataset.label }}</label>
+                {{ insertDataForm.dataset }}
+            </div>
+            <div class="mb-3">
+                <label for="{{ insertDataForm.file.id_for_label }}" class="form-label text-white">{{ insertDataForm.file.label }}</label>
+                {{ insertDataForm.file }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+
+        <form method="POST" action="/dataset/create" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <h2 class="pb-2 border-bottom text-white">New dataset</h2>
+            <div class="mb-3">
+                <label for="{{ addDataForm.name.id_for_label }}" class="form-label text-white">{{ addDataForm.name.label }}</label>
+                {{ addDataForm.name }}
+            </div>
+            <div class="mb-3">
+                <label for="{{ addDataForm.description.id_for_label }}" class="form-label text-white">{{ addDataForm.description.label }}</label>
+                {{ addDataForm.description }}
+            </div>
+            <div class="mb-3">
+                <label for="{{ addDataForm.file.id_for_label }}" class="form-label text-white">{{ addDataForm.file.label }}</label>
+                {{ addDataForm.file }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,14 @@
+.header_title{
+    color: white;
+}
+.header{
+    padding: 0 20px;
+}
+.body{
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #222; !important;
+}

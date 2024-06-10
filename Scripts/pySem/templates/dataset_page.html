@@ -3,19 +3,67 @@
 {% block title %}{{ dataset.name }}{% endblock %}
 
 {% block links %}
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div>
+    <div class=" container d-flex flex-column gap-5">
+        <div class="d-flex flex-column flex-center gap-3">
+            <h2 class="pb-2 border-bottom text-white">Chart</h2>
 
+            <h4 class="pb-2 border-bottom text-primary border-primary">Matplotlib</h4>
+            <img src="/dataset/chart/{{ dataset.id }}" id="matplotlib_chart"/>
+
+            <h4 class="pb-2 border-bottom text-primary border-primary">Chart.js</h4>
+            <canvas id="chart"></canvas>
+
+
+            <script>
+                async function toggle_chart() {
+                    const resp = await fetch("/dataset/chart/data/{{ dataset.id }}")
+                    const data = await resp.json()
+                    datasets = [
+                        {
+                            label:"Value",
+
+                        }
+                    ]
+                    write_chart(data)
+                }
+
+                function write_chart(data) {
+                   let ctx = document.getElementById("chart");
+                   new Chart(ctx,{
+                       type: 'line',
+                        data: {
+                          labels: data.labels,
+                          datasets: data
+                        }
+                   })
+                }
+                toggle_chart()
+
+                function createR_chart() {
+                    t
+                }
+            </script>
         </div>
-        <div>
 
+        <div class="d-flex flex-column flex-center gap-3">
+            <h2 class="pb-2 border-bottom text-white">Chart</h2>
+            <form action="">
+              <div class="mb-3">
+                <label for="r_value" class="form-label text-white">R value</label>
+                <input type="number" class="form-control" id="r_value">
+                  <div class="form-text text-secondary">Parameter for formula to calculate</div>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
-        <div>
 
+        <div>
+            <h2 class="pb-2 border-bottom text-white">Dataset</h2>
             <table class="table table-hover table-dark">
               <thead>
                 <tr>
@@ -33,7 +81,7 @@
                       <td>{{ value.country }}</td>
                       <td>{{ value.timestamp.month }}</td>
                       <td>{{ value.timestamp.year }}</td>
-                      <td>{{ value.timestamp.value }}</td>
+                      <td>{{ value.value }}</td>
                     </tr>
                 {% endfor %}
 
@@ -45,7 +93,7 @@
               <ul class="pagination">
                 {% for page in pages %}
                 	<li class="page-item"><a class="page-link bg-dark border-primary"
-                     href="/dataset/{{ dataset.id }}/page/{{ page }}">page</a></li>
+                     href="/dataset/{{ dataset.id }}/page/{{ page }}">{{ page }}</a></li>
                 {% endfor %}
 
               </ul>

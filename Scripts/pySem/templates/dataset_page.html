@@ -20,37 +20,52 @@
 
             <script>
                 async function toggle_chart() {
-                    const resp = await fetch("/dataset/chart/data/{{ dataset.id }}")
-                    const data = await resp.json()
-                    datasets = [
-                        {
-                            label:"Value",
-
-                        }
-                    ]
-                    write_chart(data)
+                    const resp = await fetch("/dataset/chart/data/{{ dataset.id }}");
+                    return await resp.json();
                 }
 
-                function write_chart(data) {
+                function create_chart(data) {
                    let ctx = document.getElementById("chart");
-                   new Chart(ctx,{
+                   return new Chart(ctx,{
                        type: 'line',
                         data: {
                           labels: data.labels,
-                          datasets: data
+                          datasets: [{
+                            label: 'Values',
+                            data: data.values,
+                            borderWidth: 1
+                          }]
                         }
                    })
                 }
-                toggle_chart()
+                let chart;
 
-                function createR_chart() {
-                    t
+                toggle_chart().then(res=>{
+                    chart = create_chart(res)
+                })
+
+                function createR_chart(r){
+
+                    const data = [0.5]
+                    for (let i = 1; i < chart.data.labels.length; i++) {
+                        data.push(r*data[i-1]*(1-data[i-1]))
+                    }
+                    console.log(data)
+                    chart.data.datasets.push({
+                        label: "R chart",
+                        borderWidth: 1,
+                        data: data.map(val=>val*chart.data.datasets[0].data[0]),
+                        borderColor: "#fff"
+                    })
+                    chart.update()
                 }
+
             </script>
         </div>
 
         <div class="d-flex flex-column flex-center gap-3">
             <h2 class="pb-2 border-bottom text-white">Chart</h2>
+            <button class="btn btn-primary" onclick="createR_chart(3.5)">Submit</button>
             <form action="">
               <div class="mb-3">
                 <label for="r_value" class="form-label text-white">R value</label>
@@ -58,7 +73,7 @@
                   <div class="form-text text-secondary">Parameter for formula to calculate</div>
               </div>
 
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary" onclick="createR_chart(2)">Submit</button>
             </form>
         </div>
 

@@ -3,78 +3,37 @@
 {% block title %}{{ dataset.name }}{% endblock %}
 
 {% block links %}
+    {% load static %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'scripts/char_page.js' %}" id="mainScript" class="{{ dataset.id }} " defer>
+    </script>
 {% endblock %}
 
 {% block content %}
     <div class=" container d-flex flex-column gap-5">
         <div class="d-flex flex-column flex-center gap-3">
-            <h2 class="pb-2 border-bottom text-white">Chart</h2>
-
-            <h4 class="pb-2 border-bottom text-primary border-primary">Matplotlib</h4>
-            <img src="/dataset/chart/{{ dataset.id }}" id="matplotlib_chart"/>
-
             <h4 class="pb-2 border-bottom text-primary border-primary">Chart.js</h4>
-            <canvas id="chart"></canvas>
-
-
-            <script>
-                async function toggle_chart() {
-                    const resp = await fetch("/dataset/chart/data/{{ dataset.id }}");
-                    return await resp.json();
-                }
-
-                function create_chart(data) {
-                   let ctx = document.getElementById("chart");
-                   return new Chart(ctx,{
-                       type: 'line',
-                        data: {
-                          labels: data.labels,
-                          datasets: [{
-                            label: 'Values',
-                            data: data.values,
-                            borderWidth: 1
-                          }]
-                        }
-                   })
-                }
-                let chart;
-
-                toggle_chart().then(res=>{
-                    chart = create_chart(res)
-                })
-
-                function createR_chart(r){
-
-                    const data = [0.5]
-                    for (let i = 1; i < chart.data.labels.length; i++) {
-                        data.push(r*data[i-1]*(1-data[i-1]))
-                    }
-                    console.log(data)
-                    chart.data.datasets.push({
-                        label: "R chart",
-                        borderWidth: 1,
-                        data: data.map(val=>val*chart.data.datasets[0].data[0]),
-                        borderColor: "#fff"
-                    })
-                    chart.update()
-                }
-
-            </script>
+            <canvas id="chart" class=""></canvas>
         </div>
 
         <div class="d-flex flex-column flex-center gap-3">
             <h2 class="pb-2 border-bottom text-white">Chart</h2>
-            <button class="btn btn-primary" onclick="createR_chart(3.5)">Submit</button>
-            <form action="">
-              <div class="mb-3">
-                <label for="r_value" class="form-label text-white">R value</label>
-                <input type="number" class="form-control" id="r_value">
-                  <div class="form-text text-secondary">Parameter for formula to calculate</div>
-              </div>
 
-              <button type="submit" class="btn btn-primary" onclick="createR_chart(2)">Submit</button>
-            </form>
+            <div class="input-group mb-3">
+                <div class="input-group md-3">
+                    <label for="rRange" class="form-label text-secondary">Example range</label>
+                    <input type="range" class="form-range" id="rRange" min="0" max="5" step="0.001">
+                </div>
+
+
+                <div class="input-group mb-3">
+                  <span class="input-group-text text-white bg-dark border-primary">R</span>
+                  <input id="r_value" type="text" class="form-control bg-dark border-primary text-white" disabled aria-label="Amount (to the nearest dollar)">
+                </div>
+
+                <a id="mpChart" class="btn btn-primary" >Get matplotlib chart with r parameter</a>
+            </div>
+
         </div>
 
         <div>
@@ -114,5 +73,6 @@
               </ul>
             </nav>
         </div>
+        <div></div>
     </div>
 {% endblock %}

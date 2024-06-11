@@ -44,13 +44,28 @@ def get_dataset_view(request, dataset_id, page):
 
 
 def get_chart(request, dataset_id):
+
+    r = request.GET.get('r')
+
     dataset = DataSet.objects.get(id=dataset_id)
     vals = DataSetValue.objects.filter(dataSet=dataset).order_by('timestamp')
 
     plt.figure(figsize=(10, 5))
     dates = [val.timestamp for val in vals]
     values = [val.value for val in vals]
-    plt.plot(dates, values, marker='o')
+
+    plt.plot(dates, values, marker='o', label='Dataset')
+
+    if r:
+        prediction = [values[0]/max(values)]
+
+        r = float(r)
+        m = max(values)
+
+        for i in range(1, len(dates)):
+            prediction.append(prediction[i-1]*r*(1-prediction[i-1]))
+
+        plt.plot(dates, list(map(lambda a: a*m,prediction)), marker='s', label='Prediction')
 
     plt.gcf().autofmt_xdate()
 

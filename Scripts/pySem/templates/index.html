@@ -6,9 +6,12 @@
 
 {% endblock %}
 
+{% load static %}
+
 {% block content %}
 	<div class="container d-flex flex-column">
         <div class="d-flex flex-column py-5" id="hanging-icons">
+            <img src="{% static 'images/свиняка.gif' %}">
             <h2 class="pb-2 border-bottom text-white">Hanging icons</h2>
             <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
               <div class="col d-flex align-items-start">

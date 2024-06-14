@@ -7,19 +7,20 @@
 {% endblock %}
 
 {% block content %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<div class="container d-flex flex-column">
         <div class="d-flex flex-column py-5" id="hanging-icons">
-            <h2 class="pb-2 border-bottom text-white">Hanging icons</h2>
+            <h2 class="pb-2 border-bottom text-white">Опции</h2>
             <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
               <div class="col d-flex align-items-start">
                 <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
                   <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"></use></svg>
                 </div>
                 <div>
-                  <h3 class="fs-2 text-white">Featured title</h3>
-                  <p class="text-white">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                  <h3 class="fs-2 text-white">Выбрать набор данных</h3>
+                  <p class="text-white">Абзац текста под заголовком, поясняющий заголовок. Мы добавим к этому еще одно предложение и, вероятно, будем продолжать.</p>
                   <a href="#" class="btn btn-primary">
-                    Choose dataset
+                    Выберите набор данных
                   </a>
                 </div>
               </div>
@@ -28,10 +29,10 @@
                   <svg class="bi" width="1em" height="1em"><use xlink:href="#cpu-fill"></use></svg>
                 </div>
                 <div>
-                  <h3 class="fs-2 text-white">Featured title</h3>
-                  <p class="text-white">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                  <h3 class="fs-2 text-white">Добавить данных</h3>
+                  <p class="text-white">Абзац текста под заголовком, поясняющий заголовок. Мы добавим к этому еще одно предложение и, вероятно, будем продолжать.</p>
                   <a href="/add_data" class="btn btn-primary">
-                    Fill data
+                    Заполнить данные
                   </a>
                 </div>
               </div>
@@ -40,10 +41,10 @@
                   <svg class="bi" width="1em" height="1em"><use xlink:href="#tools"></use></svg>
                 </div>
                 <div>
-                  <h3 class="fs-2 text-white">Featured title</h3>
-                  <p class="text-white">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-                  <a href="#" class="btn btn-primary">
-                    Get report
+                  <h3 class="fs-2 text-white">Получить отчет</h3>
+                  <p class="text-white">Абзац текста под заголовком, поясняющий заголовок. Мы добавим к этому еще одно предложение и, вероятно, будем продолжать.</p>
+                  <a href="/get_report" class="btn btn-primary">
+                      Получить отчет
                   </a>
                 </div>
               </div>
@@ -51,12 +52,12 @@
         </div>
 
         <div class="d-flex flex-column">
-            <h2 class="pb-2 border-bottom text-white">Choose dataset</h2>
+            <h2 class="pb-2 border-bottom text-white">Выберите набор данных</h2>
             <div>
 
                 <div class="btn-group">
                   <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Action
+                    Действие
                   </button>
                   <ul class="dropdown-menu">
                     {% for dataset in datasets %}

@@ -1,0 +1,25 @@
+{% extends 'start.html' %}
+
+{% block title %}Main page{% endblock %}
+
+{% block links %}
+
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+        <h2 class="pb-2 border-bottom text-white">Тип отчета</h2>
+        <form action="/get_report" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="{{ form.dataset.id_for_label }}" class="form-label text-primary">{{ form.dataset.label }}</label>
+              {{ form.dataset }}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.type.id_for_label }}" class="form-label text-primary">{{ form.type.label }}</label>
+                {{ form.type }}
+            </div>
+            <button type="submit" class="btn btn-primary">Получить отчет</button>
+        </form>
+    </div>
+{% endblock %}

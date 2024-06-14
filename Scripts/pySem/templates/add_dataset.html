@@ -7,10 +7,11 @@
 {% endblock %}
 
 {% block content %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <div class="container d-flex flex-column gap-5">
         <form method="post" enctype="multipart/form-data" action="/dataset/insert">
             {% csrf_token %}
-            <h2 class="pb-2 border-bottom text-white">Import data</h2>
+            <h2 class="pb-2 border-bottom text-white">Импортировать данные</h2>
             <div class="mb-3">
                 <label for="{{ insertDataForm.dataset.id_for_label }}" class="form-label text-white">{{ insertDataForm.dataset.label }}</label>
                 {{ insertDataForm.dataset }}
@@ -20,13 +21,13 @@
                 {{ insertDataForm.file }}
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Подать</button>
         </form>
 
 
         <form method="POST" action="/dataset/create" enctype="multipart/form-data" >
             {% csrf_token %}
-            <h2 class="pb-2 border-bottom text-white">New dataset</h2>
+            <h2 class="pb-2 border-bottom text-white">Новый набор данных</h2>
             <div class="mb-3">
                 <label for="{{ addDataForm.name.id_for_label }}" class="form-label text-white">{{ addDataForm.name.label }}</label>
                 {{ addDataForm.name }}
@@ -40,7 +41,7 @@
                 {{ addDataForm.file }}
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Подать</button>
         </form>
     </div>
 {% endblock %}

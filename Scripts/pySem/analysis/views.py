@@ -9,7 +9,6 @@ from django.shortcuts import render, redirect
 from .forms import CreateDatasetForm, AddDataForm, ReportForm
 from .models import DataSet, DataSetValue
 import matplotlib.pyplot as plt
-import matplotlib as mpt
 
 
 # Create your views here.
@@ -37,8 +36,25 @@ def get_dataset_view(request, dataset_id, page):
     return render(request, 'dataset_page.html', page_data)
 
 
+def calc_population(value, growth_rate, cary_capacity=125):
+    return growth_rate * value * (1 - value / cary_capacity)
+
+
+def avg_slide(arr, period):
+    sma_array = []
+    for i in range(len(arr) - period):
+        sum_var = 0
+        for j in range(period):
+            sum_var += arr[i + j]
+
+        sma_array.append(sum_var / period)
+
+    return sma_array
+
+
 def get_chart(request, dataset_id):
     r = request.GET.get('r')
+    period = request.GET.get('period')
 
     dataset = DataSet.objects.get(id=dataset_id)
     vals = DataSetValue.objects.filter(dataSet=dataset).order_by('timestamp')
@@ -50,21 +66,33 @@ def get_chart(request, dataset_id):
     plt.plot(dates, values, marker='o', label='Dataset')
 
     if r:
-        prediction = [values[0] / max(values)]
+        if not period:
+            period = 3
 
         r = float(r)
-        m = max(values)
+        data = [values[0]]
 
-        for i in range(1, len(dates)):
-            prediction.append(prediction[i - 1] * r * (1 - prediction[i - 1]))
+        for i in range(1, len(values)):
+            data.append(calc_population(values[i], r))
 
-        plt.plot(dates, list(map(lambda a: a * m, prediction)), marker='s', label='Prediction')
+        data = avg_slide(data, period)
+
+        part = (data[0] - values[0]) / 5
+
+        temp_data = [values[0]]
+
+        for i in range(1, period):
+            temp_data.append(part + temp_data[i-1])
+
+        data = temp_data+data
+
+        plt.plot(dates, data, marker='s', label='Prediction')
 
     plt.gcf().autofmt_xdate()
 
     plt.xlabel('Date')
-    plt.ylabel('Value')
-    plt.title('Line Plot of Values over Time')
+    plt.ylabel('Population (thousands of heads)')
+    plt.title('Population analysis')
 
     buffer = io.BytesIO()
     plt.savefig(buffer, format='png')
@@ -96,7 +124,7 @@ def create_dataset_values(f, dataset):
             ds = pandas.read_csv(f)
         case ".xlsx":
             ds = pandas.read_excel(f)
-
+    print(ds)
     for val in ds.values:
         DataSetValue.objects.create(
             dataSet=dataset,
@@ -153,8 +181,14 @@ def get_file_report(request, report_type, ds):
         case "txt":
             strbuf = io.StringIO()
             strbuf.write(f"Name: {ds.name}\nDescription: {ds.description}\n")
+            strbuf.write("\n" + "#" * 20 + "\n")
             dataframe.info(buf=strbuf)
+            strbuf.write("\n" + "#" * 20 + "\n")
+            strbuf.write(dataframe.describe().to_string())
+            strbuf.write("\n" + "#" * 20 + "\n")
+            strbuf.write(dataframe["value"].describe().to_string())
             strbuf.seek(0)
+
             return HttpResponse(strbuf, content_type=".txt")
         case "csv":
             dataframe.to_csv(buffer, index=False)

@@ -7,6 +7,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{% static 'scripts/char_page.js' %}" id="mainScript" class="{{ dataset.id }} " defer>
     </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -17,23 +19,45 @@
             <canvas id="chart" class=""></canvas>
         </div>
         <div class="d-flex flex-column flex-center gap-3">
-            <h2 class="pb-2 border-bottom text-white">Диаграмма</h2>
+            <h2 class="pb-2 border-bottom text-white">Параметры</h2>
 
             <div class="input-group mb-3">
                 <div class="input-group md-3">
-                    <label for="rRange" class="form-label text-secondary">Пример диапазона</label>
+                    <label for="rRange" class="form-label text-white">Значение коэффициента популяции</label>
+                    <p class="text-secondary">Коэффициент <i>r</i> в логистическом отображении представляет собой скорость роста популяции. Он определяет, как быстро популяция увеличивается или уменьшается в зависимости от текущего размера популяции. Значение <i>r</i> влияет на динамику популяции, приводя к различным режимам поведения: от устойчивого состояния до хаотического поведения. При малых значениях <i>r</i> популяция стремится к стабильному равновесию, тогда как при больших значениях <i>r</i> популяция может демонстрировать сложные колебания и хаос.</p>
                     <input type="range" class="form-range" id="rRange" min="0" max="5" step="0.001">
                 </div>
-
 
                 <div class="input-group mb-3">
                   <span class="input-group-text text-white bg-dark border-primary">R</span>
                   <input id="r_value" type="text" class="form-control bg-dark border-primary text-white" disabled aria-label="Amount (to the nearest dollar)">
                 </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group md-3">
+                    <label for="slideRange" class="form-label text-white">Значение промежутка средней скользящей</label>
+                    <p class="text-secondary">Применение промежутка средней скользящей (SMA) при исследовании популяции через логистическое отображение помогает сгладить колебания и выявить общие тенденции роста или убывания популяции. SMA вычисляется путем усреднения значений популяции в заданном временном интервале, что позволяет уменьшить влияние краткосрочных колебаний и шума на графике. Это особенно полезно при анализе временных рядов, так как позволяет лучше видеть общую динамику изменений популяции в течение времени.</p>
+                    <input type="range" class="form-range" id="slideRange" min="1" max="5" step="1">
+                </div>
 
-                <a id="mpChart" class="btn btn-primary" >Получить диаграмму matplotlib с параметром р</a>
+                <div class="input-group mb-3">
+                  <span class="input-group-text text-white bg-dark border-primary">Avg slide</span>
+                  <input id="slide_value" type="text" class="form-control bg-dark border-primary text-white" disabled aria-label="Amount (to the nearest dollar)">
+                </div>
             </div>
 
+            <a id="mpChart" class="btn btn-primary" >Получить диаграмму matplotlib с параметром р</a>
+        </div>
+
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn border-primary bg-dark text-primary" onclick="add_duration(5)">Достроить + 5 лет</button>
+          <button type="button" class="btn border-primary bg-dark text-primary" onclick="add_duration(10)">Достроить + 10 лет</button>
+          <button type="button" class="btn border-primary bg-dark text-primary" onclick="add_duration(15)">Достроить + 15 лет</button>
+        </div>
+
+        <div class="d-flex flex-column flex-center gap-3">
+            <h2 class="pb-2 border-bottom text-white">Описание алгоритма</h2>
+            <p class="text-secondary">Логистическое отображение является математической моделью, используемой для описания роста популяции в условиях ограниченных ресурсов. Эта модель выражается уравнением: <i>x<sub>n+1</sub> = r * x<sub>n</sub> * (1 - x<sub>n</sub>)</i>, где <i>x<sub>n</sub></i> представляет размер популяции на текущем шаге, <i>r</i> - коэффициент роста, а <i>x<sub>n+1</sub></i> - размер популяции на следующем шаге. Логистическое отображение демонстрирует, как популяция сначала экспоненциально растет, но затем стабилизируется или начинает колебаться из-за ограничения ресурсов. При разных значениях <i>r</i> модель может приводить к различным режимам поведения: от устойчивого равновесия до хаотических флуктуаций, что делает ее полезной для изучения сложных динамических систем.</p>
         </div>
 
         <div>

@@ -9,6 +9,30 @@
 {% block content %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <div class="container d-flex flex-column gap-5">
+
+        <div class="d-flex flex-column gap-6">
+            <h3 class="pb-3 text-white">Формат данных</h3>
+            <p class="text-secondary">Импортировать данные можно из .csv и .xlsx файлов. Для корректной работы необзодимо ввести таблицу в следующем формате.</p>
+            <table class="table-dark ">
+              <thead>
+                <tr>
+                  <th scope="col">month</th>
+                  <th scope="col">geo</th>
+                  <th scope="col">year</th>
+                  <th scope="col">value</th>
+                </tr>
+              </thead>
+             <tbody>
+                <tr>
+                  <td>M6</td>
+                  <td>DE</td>
+                  <td>1986</td>
+                  <td>30.4</td>
+                </tr>
+             </tbody>
+            </table>
+        </div>
+
         <form method="post" enctype="multipart/form-data" action="/dataset/insert">
             {% csrf_token %}
             <h2 class="pb-2 border-bottom text-white">Импортировать данные</h2>
